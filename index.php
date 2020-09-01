@@ -48,8 +48,15 @@
 		  case "*": {          
 						$result = $nr1 * $nr2;     
 					 }; break;
-		  case "/": {          
-						$result = $nr1 / $nr2;     
+		  case "/": {   
+						if ($nr2 != 0)  { //dividing by zero mittigation, if nr2 is zero then error message is outputed
+							$result = $nr1 / $nr2;
+							$msg = '';} 
+							else { 
+								$msg = 'Dividing by zero NaN'; // text of the message
+				                $msgClass = 'alert-danger'; // bootstrap type alert-danger is outputed
+							 } ;  
+						     
 					 }; break;	
 		  case "Power": {          
 						$result = Pow($nr1, $nr2);     
@@ -91,9 +98,7 @@
       </div>
     </nav>
     <div class="container">	
-    	<?php if($msg != ''): ?>
-    		<div class="alert <?php echo $msgClass; ?>"><?php echo $msg; ?></div>
-		<?php endif; ?>
+    	
 		<img id="calcimage" src="./images/calc.png" alt="Calc image" width="200" height="200">
       <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 	      <div class="form-group">
@@ -161,7 +166,7 @@
 			     // echo "<label> = </label> ";
 				 // echo " <input type="text" id="result_field" name="result_field" value="$result"  >  <br>" ;   
 				 //    } : ''; 
-				 if ($is_result) {
+				 if ($is_result && $msg == '') {
 					$result = number_format($result, 2, ',', ' '); // formating number refer to https://www.php.net/manual/en/function.number-format.php
 
 						echo "<br> <br>";
@@ -174,6 +179,14 @@
 					//echo " <input type="text" id="result_field" name="result_field" value="$result"  >  <br>" ;
 				} ; 
 				 ?>
+                 <br>
+				 	
+					 
+    	            <?php if($msg != ''): ?>  <!-- This part show error or warning message if one of the operand does not meet calculations requirements - dividing by zero -->
+						<br><br>	
+    		        <div class="alert <?php echo $msgClass; ?>"><?php echo $msg; ?></div>
+		            <?php endif; ?>
+					
       </form>
 	</div>
 	
